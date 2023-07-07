@@ -8,6 +8,12 @@ import (
 
 var a = 0
 
+
+/**
+关于cron
+定时任务库
+ */
+
 func main() {
 	cron1 := cron.New()
 	_, err := cron1.AddFunc("@every 5s", func() {
