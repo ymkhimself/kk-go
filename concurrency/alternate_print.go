@@ -91,11 +91,31 @@ func alternate2() {
 }
 
 
-// 使用一个channel，其实就是当锁用了
+// 使用一个channel,这个方法其实是不正确的。
 func alternate3() {
-
+	// 用一个无缓冲的channel
+	c := make(chan int)
+	group := sync.WaitGroup{}
+	group.Add(2)
+	go func() {
+		for i:=1; i<=101;i+=2{
+			c<-1
+			fmt.Println("奇数:",i)
+		}
+		group.Done()
+	}()
+	go func() {
+		for i:=0;i<101;i+=2 {
+			<-c
+			fmt.Println("偶数:",i)
+		}
+		group.Done()
+	}()
+	
+	group.Wait()
+	close(c)
 }
 
 func main() {
-	alternate2()
+	alternate3()
 }
