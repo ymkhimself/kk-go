@@ -13,16 +13,7 @@ import (
 )
 
 func main() {
-
-	resFile := "/Users/ymk/Desktop/敏感词-科幻.txt"
-	create, err := os.Create(resFile)
-	if err != nil {
-		panic(err)
-	}
-	defer create.Close()
-	os.Stdout = create
-
-	root := "/Users/ymk/Documents/魔法骰子/科幻"
+	root := "/Users/ymk/Documents/魔法骰子/美食"
 	filepath.Walk(root, func(path string, info fs.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil
@@ -38,7 +29,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		theme := "3"
+		theme := "10"
 		body := &bytes.Buffer{}
 		writer := multipart.NewWriter(body)
 		fmt.Println(fileName)
@@ -54,14 +45,15 @@ func main() {
 
 		writer.WriteField("theme", theme)
 		writer.WriteField("type", typeKey)
-		writer.WriteField("operation", "OVERWRITE")
+		writer.WriteField("operation", "OVERWRITE_ALL")
+		writer.WriteField("slotsNeedDetect", "Sheet2")
 
 		err = writer.Close()
 		if err != nil {
 			panic(err)
 		}
 
-		request, err := http.NewRequest("POST", "http://localhost:8156/magicDice/uploadType", body)
+		request, err := http.NewRequest("POST", "http://localhost:8156/magicDice/uploadTypeAsync", body)
 		if err != nil {
 			panic(err)
 		}

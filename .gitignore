@@ -23,3 +23,5 @@ _cgo_export.*
 *.rar
 *.tar
 *.zip
+
+upload_file
